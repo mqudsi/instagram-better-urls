@@ -7,10 +7,30 @@
   /**
    * Attempts to extract the username of the post author from the DOM.
    */
-  function extractUsername() {
-    const postArticle = document.querySelector('article');
-    const container = postArticle || document.querySelector('main, [role="main"]');
+  function extractUsername(postId) {
+    let container = document.querySelector('div[role="dialog"]');
+
+    if (!container && postId) {
+      const postLink = document.querySelector(
+        `a[href*="/p/${postId}"], a[href*="/reel/${postId}"], a[href*="/reels/${postId}"]`
+      );
+      if (postLink) {
+        container = postLink.closest('article, [role="dialog"]');
+      }
+    }
+
+    if (!container) {
+      const articles = document.querySelectorAll('article');
+      if (articles.length === 1) {
+        container = articles[0];
+      } else if (articles.length === 0) {
+        container = document.querySelector('main, [role="main"]');
+      }
+    }
+
     if (!container) return null;
+
+    const excluded = ['explore', 'reels', 'reel', 'stories', 'direct', 'p', 'audio'];
 
     // Extract author's profile link from the post <header>
     const header = container.querySelector('header');
@@ -19,7 +39,7 @@
       for (const link of links) {
         const href = link.getAttribute('href');
         const match = href && href.match(/^\/([a-zA-Z0-9._]+)\/?$/);
-        if (match && !['explore', 'reels', 'reel', 'stories', 'direct', 'p'].includes(match[1])) {
+        if (match && !excluded.includes(match[1])) {
           return match[1];
         }
       }
@@ -30,7 +50,7 @@
     for (const link of fallbackLinks) {
       const href = link.getAttribute('href');
       const match = href && href.match(/^\/([a-zA-Z0-9._]+)\/?$/);
-      if (match && !['explore', 'reels', 'reel', 'stories', 'direct', 'p'].includes(match[1])) {
+      if (match && !excluded.includes(match[1])) {
         return match[1];
       }
     }
@@ -42,7 +62,7 @@
    * Observes the DOM until the post header mounts and the username is found.
    */
   function waitForUsernameAndReplace(postId) {
-    const initialUser = extractUsername();
+    const initialUser = extractUsername(postId);
     if (initialUser) {
       silentlyUpdateUrl(initialUser, postId);
       return;
@@ -55,7 +75,7 @@
         return;
       }
 
-      const username = extractUsername();
+      const username = extractUsername(postId);
       if (username) {
         obs.disconnect();
         silentlyUpdateUrl(username, postId);
