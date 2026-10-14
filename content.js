@@ -1,15 +1,15 @@
 (function () {
   'use strict';
 
-  // Matches /p/:post_id with optional trailing slash
-  const POST_URL_REGEX = /^\/p\/([a-zA-Z0-9_-]+)\/?$/;
+  // Matches /p/:post_id or /reel(s)/:post_id with optional trailing slash
+  const POST_URL_REGEX = /^\/(?:p|reels?)\/([a-zA-Z0-9_-]+)\/?$/;
 
   /**
    * Attempts to extract the username of the post author from the DOM.
    */
   function extractUsername() {
     const postArticle = document.querySelector('article');
-    const container = postArticle || document.querySelector('main');
+    const container = postArticle || document.querySelector('main, [role="main"]');
     if (!container) return null;
 
     // Extract author's profile link from the post <header>
@@ -19,7 +19,7 @@
       for (const link of links) {
         const href = link.getAttribute('href');
         const match = href && href.match(/^\/([a-zA-Z0-9._]+)\/?$/);
-        if (match && !['explore', 'reels', 'stories', 'direct'].includes(match[1])) {
+        if (match && !['explore', 'reels', 'reel', 'stories', 'direct', 'p'].includes(match[1])) {
           return match[1];
         }
       }
@@ -30,7 +30,7 @@
     for (const link of fallbackLinks) {
       const href = link.getAttribute('href');
       const match = href && href.match(/^\/([a-zA-Z0-9._]+)\/?$/);
-      if (match && !['explore', 'reels', 'stories', 'direct', 'p'].includes(match[1])) {
+      if (match && !['explore', 'reels', 'reel', 'stories', 'direct', 'p'].includes(match[1])) {
         return match[1];
       }
     }
@@ -89,7 +89,7 @@
   }
 
   /**
-   * Inspects the current URL and triggers extraction if on a /p/:post_id page.
+   * Inspects the current URL and triggers extraction if on a /p/:post_id or /reel(s)/:post_id page.
    */
   function checkUrl() {
     const match = window.location.pathname.match(POST_URL_REGEX);
