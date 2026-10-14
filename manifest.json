@@ -2,6 +2,9 @@
   "manifest_version": 3,
   "name": "Instagram Better URLs",
   "version": "1.0.0",
+  "icons": {
+    "128": "icon.svg"
+  },
   "description": "Always include user id in post URLs on Instagram.",
   "content_scripts": [
     {
