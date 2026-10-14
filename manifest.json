@@ -1,0 +1,23 @@
+{
+  "manifest_version": 3,
+  "name": "Instagram Better URLs",
+  "version": "1.0.0",
+  "description": "Always include user id in post URLs on Instagram.",
+  "content_scripts": [
+    {
+      "matches": [
+        "https://instagram.com/*",
+        "https://www.instagram.com/*"
+      ],
+      "js": ["content.js"],
+      "run_at": "document_start",
+      "world": "MAIN"
+    }
+  ],
+  "browser_specific_settings": {
+    "gecko": {
+      "id": "instagram-better-urls@local",
+      "strict_min_version": "128.0"
+    }
+  }
+}
