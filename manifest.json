@@ -1,7 +1,7 @@
 {
   "manifest_version": 3,
   "name": "Instagram Better URLs",
-  "version": "1.0.0",
+  "version": "1.1.0",
   "icons": {
     "128": "icon.svg"
   },
@@ -19,8 +19,10 @@
   ],
   "browser_specific_settings": {
     "gecko": {
-      "id": "instagram-better-urls@local",
-      "strict_min_version": "128.0"
+      "id": "@instagram-better-urls",
+      "data_collection_permissions": {
+        "required": ["none"]
+      }
     }
   }
 }
