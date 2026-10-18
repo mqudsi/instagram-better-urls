@@ -101,9 +101,9 @@
   function silentlyUpdateUrl(userId, postId) {
     const currentParams = window.location.search;
     const currentHash = window.location.hash;
-    const newPath = `/${userId}/${postId}/${currentParams}${currentHash}`;
+    const newPath = `/${userId}/p/${postId}/${currentParams}${currentHash}`;
 
-    if (window.location.pathname !== `/${userId}/${postId}/`) {
+    if (window.location.pathname !== `/${userId}/p/${postId}/`) {
       originalReplaceState.call(window.history, window.history.state, '', newPath);
     }
   }
