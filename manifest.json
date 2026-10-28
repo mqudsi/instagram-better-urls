@@ -15,16 +15,24 @@
         "https://instagram.com/*",
         "https://www.instagram.com/*"
       ],
-      "js": ["content.js"],
+      "js": [
+        "content.js"
+      ],
       "run_at": "document_start",
       "world": "MAIN"
     }
   ],
+  "action": {
+    "default_title": "Instagram Better URLs"
+  },
   "browser_specific_settings": {
     "gecko": {
       "id": "@instagram-better-urls",
+      "strict_min_version": "128.0",
       "data_collection_permissions": {
-        "required": ["none"]
+        "required": [
+          "none"
+        ]
       }
     }
   }
